@@ -103,7 +103,6 @@ class AuthController extends Controller
         $model = new SignupForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
             try {
                 $this->authManager->signUp($model);
                 return $this->goBack();
