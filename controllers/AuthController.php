@@ -3,13 +3,14 @@
 namespace app\controllers;
 
 use app\services\auth\LoginForm;
+use app\services\auth\SignupForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
 
-class SiteController extends Controller
+class AuthController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -37,6 +38,20 @@ class SiteController extends Controller
         ];
     }
 
+
+    public function actionSignUp()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new SignupForm();
+
+        return $this->render('sign-up', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -53,14 +68,39 @@ class SiteController extends Controller
         ];
     }
 
+
     /**
-     * Displays homepage.
+     * Login action.
      *
-     * @return string
+     * @return Response|string
      */
-    public function actionIndex()
+    public function actionLogin()
     {
-        return $this->render('index');
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+
+        $model->password = '';
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Logout action.
+     *
+     * @return Response
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 
 }
