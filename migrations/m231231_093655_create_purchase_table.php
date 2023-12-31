@@ -12,7 +12,7 @@ class m231231_093655_create_purchase_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('purchase', [
+        $this->createTable('purchases', [
             'id' => $this->primaryKey(),
             'title' => $this->string(255)->notNull(),
             'description' => $this->text(),
@@ -22,8 +22,8 @@ class m231231_093655_create_purchase_table extends Migration
         ]);
 
         $this->addForeignKey(
-            'fk-purchase-user_id',
-            'purchase',
+            'fk-purchases-user_id',
+            'purchases',
             'user_id',
             'user',
             'id',
@@ -36,7 +36,7 @@ class m231231_093655_create_purchase_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('fk-purchase-user_id', 'purchase');
-        $this->dropTable('{{%purchase}}');
+        $this->dropForeignKey('fk-purchases-user_id', 'purchases');
+        $this->dropTable('{{%purchases}}');
     }
 }

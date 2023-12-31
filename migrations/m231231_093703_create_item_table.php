@@ -12,7 +12,7 @@ class m231231_093703_create_item_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('item', [
+        $this->createTable('items', [
             'id' => $this->primaryKey(),
             'purchase_id' => $this->integer()->notNull(),
             'description' => $this->string(255)->notNull(),
@@ -21,10 +21,10 @@ class m231231_093703_create_item_table extends Migration
         ]);
 
         $this->addForeignKey(
-            'fk-item-purchase_id',
-            'item',
+            'fk-items-purchase_id',
+            'items',
             'purchase_id',
-            'purchase',
+            'purchases',
             'id',
             'CASCADE'
         );
@@ -35,7 +35,7 @@ class m231231_093703_create_item_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('fk-item-purchase_id', 'item');
-        $this->dropTable('{{%item}}');
+        $this->dropForeignKey('fk-item-purchases_id', 'items');
+        $this->dropTable('{{%items}}');
     }
 }
