@@ -9,6 +9,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 class AuthController extends Controller
 {
@@ -38,19 +39,6 @@ class AuthController extends Controller
         ];
     }
 
-
-    public function actionSignUp()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new SignupForm();
-
-        return $this->render('sign-up', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * {@inheritdoc}
@@ -90,6 +78,34 @@ class AuthController extends Controller
             'model' => $model,
         ]);
     }
+
+    public function actionSignUp()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new SignupForm();
+
+        return $this->render('sign-up', [
+            'model' => $model,
+        ]);
+    }
+
+
+    public function actionValidateForm($path, $modelName)
+    {
+
+        $class = $path . '\\' . $modelName;
+        $model = new $class();
+
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        return true;
+    }
+
 
     /**
      * Logout action.

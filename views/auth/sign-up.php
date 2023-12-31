@@ -18,6 +18,7 @@ use yii\bootstrap4\Html;
                         'id' => 'user-form',
                         'enableClientValidation' => true,
                         'enableAjaxValidation' => true,
+                        'validationUrl' => \yii\helpers\Url::to(['/auth/validate-form', 'path' => 'app\services\auth', 'modelName' =>  'SignupForm'])
                     ]
                 ); ?>
                 <div class="form-row">

@@ -25,6 +25,7 @@ $this->title = 'Login';
                         'id' => 'login-form',
                         'enableClientValidation' => true,
                         'enableAjaxValidation' => true,
+                        'validationUrl' => \yii\helpers\Url::to(['/auth/validate-form', 'path' => 'app\services\auth', 'modelName' => 'LoginForm'])
                     ]
                 ); ?>
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>

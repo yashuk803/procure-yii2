@@ -17,7 +17,7 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            [['email', 'password','first_name', 'last_name'], 'required', 'message' => Yii::t('app', "The field must be filled out")],
+            [['first_name', 'last_name', 'email', 'password'], 'required', 'message' => Yii::t('app', "The field must be filled out")],
             ['email', 'email'],
             [['email'], 'unique',
                 'targetAttribute' => ['email' => 'email'],
