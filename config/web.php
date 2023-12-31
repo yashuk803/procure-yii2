@@ -52,6 +52,11 @@ $config = [
         ],
 
     ],
+    'container' => [
+        'definitions' => [
+            'AuthManager' => ['class' => 'app\services\auth\AuthManager'],
+        ],
+    ],
     'params' => $params,
 ];
 

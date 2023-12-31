@@ -18,6 +18,8 @@ class SignupForm extends Model
     {
         return [
             [['first_name', 'last_name', 'email', 'password'], 'required', 'message' => Yii::t('app', "The field must be filled out")],
+            [['first_name', 'last_name', 'email'], 'string', 'max' => 255],
+            ['password', 'string', 'min' => 8],
             ['email', 'email'],
             [['email'], 'unique',
                 'targetAttribute' => ['email' => 'email'],

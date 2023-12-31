@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\services\auth\AuthManager;
 use app\services\auth\LoginForm;
 use app\services\auth\SignupForm;
 use Yii;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -13,6 +15,7 @@ use yii\widgets\ActiveForm;
 
 class AuthController extends Controller
 {
+    private $authManager;
     /**
      * {@inheritdoc}
      */
@@ -37,6 +40,12 @@ class AuthController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct($id, $module, AuthManager $authManager, $config = [])
+    {
+        $this->authManager = $authManager;
+        parent::__construct($id, $module, $config);
     }
 
 
@@ -69,8 +78,14 @@ class AuthController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            try {
+                $this->authManager->login($model);
+                return $this->goBack();
+            } catch (Exception $e) {
+
+            }
+
         }
 
         $model->password = '';
@@ -86,6 +101,16 @@ class AuthController extends Controller
         }
 
         $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            try {
+                $this->authManager->signUp($model);
+                return $this->goBack();
+            } catch (Exception $e) {
+
+            }
+        }
 
         return $this->render('sign-up', [
             'model' => $model,
