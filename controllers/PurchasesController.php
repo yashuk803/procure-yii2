@@ -86,9 +86,10 @@ class PurchasesController extends Controller
             try {
                 $purchaseManager = new PurchaseManager($this->request->post(), $model);
                 $modelId = $purchaseManager->execute();
+                \Yii::$app->getSession()->setFlash('success', 'Success create');
                 return $this->redirect(['view', 'id' => $modelId]);
             } catch (\Exception $e) {
-
+                \Yii::$app->getSession()->setFlash('error', $e->getMessage());
             }
         }
 
@@ -115,9 +116,10 @@ class PurchasesController extends Controller
             try {
                 $purchaseManager = new PurchaseManager($this->request->post(), $model);
                 $modelId = $purchaseManager->execute();
+                \Yii::$app->getSession()->setFlash('success', 'Success update');
                 return $this->redirect(['view', 'id' => $modelId]);
             } catch (\Exception $e) {
-
+                \Yii::$app->getSession()->setFlash('error', $e->getMessage());
             }
         }
 

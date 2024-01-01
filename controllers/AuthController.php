@@ -65,7 +65,6 @@ class AuthController extends Controller
         ];
     }
 
-
     /**
      * Login action.
      *
@@ -83,7 +82,7 @@ class AuthController extends Controller
                 $this->authManager->login($model);
                 return $this->goBack();
             } catch (Exception $e) {
-
+                Yii::$app->getSession()->setFlash('error', $e->getMessage());
             }
 
         }
@@ -105,9 +104,10 @@ class AuthController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             try {
                 $this->authManager->signUp($model);
-                return $this->goBack();
+                Yii::$app->getSession()->setFlash('success', 'Success register');
+                return $this->redirect(['/auth/login']);
             } catch (Exception $e) {
-
+                Yii::$app->getSession()->setFlash('error', $e->getMessage());
             }
         }
 
