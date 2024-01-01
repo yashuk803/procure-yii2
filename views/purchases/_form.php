@@ -2,11 +2,11 @@
 
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var app\models\Purchases $model */
-/** @var yii\widgets\ActiveForm $form */
+/** @var yii\bootstrap4\ActiveForm $form */
 
 ?>
 <?php $form = ActiveForm::begin([
@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
                 <div class="card-body">
                     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'description')->textarea(['rows' => 6, 'maxlength' => true]) ?>
 
                     <?= $form->field($model, 'budget')->input('number', ['maxlength' => true, 'min' => 0]) ?>
 
@@ -56,10 +56,10 @@ use yii\widgets\ActiveForm;
                         <?php foreach ($modelItems as $i => $item): ?>
                             <div class="items row">
                                 <div class="form-group col-md-5">
-                                    <?= $form->field($item, "[{$i}]description")->textarea(['rows' => 1]) ?>
+                                    <?= $form->field($item, "[{$i}]description")->textarea(['rows' => 1, 'maxlength' => true]) ?>
                                 </div>
                                 <div class="form-group col-md-2">
-                                    <?= $form->field($item, "[{$i}]quantity")->input('number', [ 'min' => 0]) ?>
+                                    <?= $form->field($item, "[{$i}]quantity")->input('number', ['maxlength' => true, 'min' => 0]) ?>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <?= $form->field($item, "[{$i}]unit")->dropDownList(\app\models\Items::UNITS) ?>
