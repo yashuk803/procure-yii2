@@ -21,21 +21,39 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             'title',
             'description:ntext',
             'budget',
-            'status_id',
-            //'user_id',
+            [
+                'attribute' => 'status_id',
+                'format' => 'html',
+                'content' => function ($data) {
+                    return Purchases::STATUSES[$data->status_id];
+                },
+            ],
+            [
+                'attribute' => 'user_id',
+                'label' => 'User Name',
+                'format' => 'html',
+                'content' => function ($data) {
+                    return $data->user->first_name;
+                },
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Purchases $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                 },
+                'visibleButtons' => [
+                    'delete' => function ($model, $key, $index) {
+                        return false;
+                    },
+                    'update' => function ($model, $key, $index) {
+                        return $model->status_id == Purchases::STATUS_DRAFT;
+                    },
+                ],
             ],
         ],
     ]); ?>
-
-
 </div>

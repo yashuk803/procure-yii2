@@ -42,6 +42,11 @@ AppAsset::register($this);
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/auth/login']]
             ) : (
+                    '</li>' .
+                '<li class="nav-item">'
+                . Html::a('Purchases', ['/purchases'], ['class' => 'nav-link'])
+                . '</li>' .
+
                 '<li>'
                 . Html::beginForm(['/auth/logout'], 'post', ['class' => 'form-inline'])
                 . Html::submitButton(
@@ -49,7 +54,6 @@ AppAsset::register($this);
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
-                . '</li>'
             )
         ],
     ]);
