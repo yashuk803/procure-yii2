@@ -19,13 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Purchases', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
             'title',
             'description:ntext',
             'budget',

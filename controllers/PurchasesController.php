@@ -3,11 +3,17 @@
 namespace app\controllers;
 
 use app\models\Items;
+use app\models\MultipleModel;
 use app\models\Purchases;
 use app\models\PurchasesSearch;
+use app\services\purchases\PurchaseManager;
+use yii\base\Model;
+use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * PurchasesController implements the CRUD actions for Purchases model.
@@ -19,17 +25,17 @@ class PurchasesController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
     /**
@@ -71,14 +77,14 @@ class PurchasesController extends Controller
         $model = new Purchases();
         $modelItems = [new Items()];
 
-
-
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            try {
+                $purchaseManager = new PurchaseManager($this->request->post(), $model);
+                $modelId = $purchaseManager->execute();
+                return $this->redirect(['view', 'id' => $modelId]);
+            } catch (\Exception $e) {
+
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
@@ -98,28 +104,44 @@ class PurchasesController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $modelItems = $model->items ? $model->items : [new Items()];
+
+        if ($this->request->isPost) {
+            try {
+                $purchaseManager = new PurchaseManager($this->request->post(), $model);
+                $modelId = $purchaseManager->execute();
+                return $this->redirect(['view', 'id' => $modelId]);
+            } catch (\Exception $e) {
+
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelItems' => $modelItems,
         ]);
     }
 
-    /**
-     * Deletes an existing Purchases model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+    public function actionValidateForm()
+    {
+        $post = \Yii::$app->request->post();
+        $model = new Purchases();
+        $modelItems = [new Items()];
+
+        if (\Yii::$app->request->isAjax && $model->load($post)) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            MultipleModel::createMultiple(Items::class, 'id', $modelItems);
+            Model::loadMultiple($modelItems, $post);
+
+            return ArrayHelper::merge(
+                ActiveForm::validate($model),
+                ActiveForm::validateMultiple($modelItems)
+            );
+        }
+        return true;
     }
+
 
     /**
      * Finds the Purchases model based on its primary key value.

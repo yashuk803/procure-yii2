@@ -10,8 +10,11 @@ use yii\bootstrap4\ActiveForm;
 
 ?>
 <?php $form = ActiveForm::begin([
-        'id' => 'purchases-form'
-    ]); ?>
+    'id' => 'purchases-form',
+    'enableClientValidation' => true,
+    'enableAjaxValidation' => true,
+    'validationUrl' => \yii\helpers\Url::to(['/purchases/validate-form'])
+]); ?>
 <div class="purchases-form">
     <div class="row">
         <div class="col-12">
@@ -55,6 +58,12 @@ use yii\bootstrap4\ActiveForm;
                     <div class="container-items">
                         <?php foreach ($modelItems as $i => $item): ?>
                             <div class="items row">
+                                <?php
+                                if (!$model->isNewRecord) {
+                                    echo Html::activeHiddenInput($item, "[{$i}]id");
+                                }
+
+                                ?>
                                 <div class="form-group col-md-5">
                                     <?= $form->field($item, "[{$i}]description")->textarea(['rows' => 1, 'maxlength' => true]) ?>
                                 </div>
