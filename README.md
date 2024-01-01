@@ -9,12 +9,12 @@
 5. Execute the commands: composer install and php yii migrate.
 6. Add two files, db.php and params.php, to the config folder.
 
-## Использование
+## Usage
 
 1. Register or log in.
 2. Create a new procurement.
 3. Edit and manage procurements.
 
-## Демо
+## Demo
 
-[Демонстрация работы приложения](ссылка)
+[Application Demonstration](ссылка)
