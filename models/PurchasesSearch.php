@@ -2,9 +2,9 @@
 
 namespace app\models;
 
+use app\models\Purchases;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Purchases;
 
 /**
  * PurchasesSearch represents the model behind the search form of `app\models\Purchases`.
@@ -41,7 +41,11 @@ class PurchasesSearch extends Purchases
      */
     public function search($params)
     {
-        $query = Purchases::find();
+        $query = Purchases::find()->where([
+            'OR',
+            ['user_id' => \Yii::$app->user->id, 'status_id' => Purchases::STATUS_DRAFT],
+            ['status_id' => Purchases::STATUS_ACTIVE],
+        ]);
 
         // add conditions that should always apply here
 

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\DraftEditAccessMiddleware;
 use app\models\Items;
 use app\models\MultipleModel;
 use app\models\Purchases;
@@ -26,6 +27,10 @@ class PurchasesController extends Controller
     public function behaviors()
     {
         return [
+            'draftAccessFilter' => [
+                'class' => DraftEditAccessMiddleware::class,
+                'only' => ['update', 'view'],
+            ],
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [

@@ -13,13 +13,13 @@ use Yii;
  * @property float $budget
  * @property int $status_id
  * @property int $user_id
- *
  * @property Items[] $items
  * @property User $user
  */
 class Purchases extends \yii\db\ActiveRecord
 {
-
+    const STATUS_ACTIVE = 2;
+    const STATUS_DRAFT = 1;
     const STATUSES = [
         1 => 'Draft',
         2 => 'Active',
