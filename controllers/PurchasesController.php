@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Items;
 use app\models\Purchases;
 use app\models\PurchasesSearch;
 use yii\web\Controller;
@@ -68,6 +69,9 @@ class PurchasesController extends Controller
     public function actionCreate()
     {
         $model = new Purchases();
+        $modelItems = [new Items()];
+
+
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -79,6 +83,7 @@ class PurchasesController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'modelItems' => $modelItems,
         ]);
     }
 

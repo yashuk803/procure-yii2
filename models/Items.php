@@ -17,6 +17,13 @@ use Yii;
  */
 class Items extends \yii\db\ActiveRecord
 {
+    const UNITS = [
+        'kg' => 'kg',
+        'packages' => 'packages',
+        'pieces' => 'pieces',
+
+    ];
+
     /**
      * {@inheritdoc}
      */

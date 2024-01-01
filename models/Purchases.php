@@ -19,6 +19,12 @@ use Yii;
  */
 class Purchases extends \yii\db\ActiveRecord
 {
+
+    const STATUSES = [
+        1 => 'Draft',
+        2 => 'Active',
+
+    ];
     /**
      * {@inheritdoc}
      */
@@ -52,7 +58,7 @@ class Purchases extends \yii\db\ActiveRecord
             'title' => 'Title',
             'description' => 'Description',
             'budget' => 'Budget',
-            'status_id' => 'Status ID',
+            'status_id' => 'Status',
             'user_id' => 'User ID',
         ];
     }
