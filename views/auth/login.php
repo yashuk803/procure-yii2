@@ -28,8 +28,8 @@ $this->title = 'Login';
                         'validationUrl' => \yii\helpers\Url::to(['/auth/validate-form', 'path' => 'app\services\auth', 'modelName' => 'LoginForm'])
                     ]
                 ); ?>
-                <label for="loginform-username">Email</label>
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('false') ?>
+
+                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 

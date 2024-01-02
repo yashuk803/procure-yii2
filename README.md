@@ -17,4 +17,4 @@
 
 ## Demo
 
-[Application Demonstration](ссылка)
+[Application Demonstration](https://purchases.itbox.com.ua/)
